@@ -1,0 +1,153 @@
+import React, { useState, useEffect } from 'react';
+import './ChurchDirectoryPage.css'; // Import the new CSS file
+
+const ChurchDirectoryPage = () => {
+  const [churches, setChurches] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredChurches, setFilteredChurches] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [churchesPerPage] = useState(12); // Number of churches per page
+
+  useEffect(() => {
+    const fetchChurches = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          setError('Authentication token not found. Please log in.');
+          setLoading(false);
+          return;
+        }
+
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        };
+
+        const response = await fetch('/api/churches', { headers });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setChurches(data);
+        setFilteredChurches(data); // Initialize filtered churches with all churches
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchChurches();
+  }, []);
+
+  useEffect(() => {
+    const results = churches.filter(church =>
+      church.church_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      church.denomination.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      church.church_street_purok.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      church.church_barangay.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      church.church_town.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredChurches(results);
+    setCurrentPage(1); // Reset to first page on new search
+  }, [searchTerm, churches]);
+
+  // Get current churches for pagination
+  const indexOfLastChurch = currentPage * churchesPerPage;
+  const indexOfFirstChurch = indexOfLastChurch - churchesPerPage;
+  const currentChurches = filteredChurches.slice(indexOfFirstChurch, indexOfLastChurch);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const totalPages = Math.ceil(filteredChurches.length / churchesPerPage);
+
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPageButtons = 5; // Number of page buttons to display at once (excluding prev/next)
+
+    if (totalPages <= maxPageButtons) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      const startPage = Math.max(2, currentPage - Math.floor(maxPageButtons / 2) + 1);
+      const endPage = Math.min(totalPages - 1, currentPage + Math.floor(maxPageButtons / 2) - 1);
+
+      pageNumbers.push(1); // Always show the first page
+
+      if (startPage > 2) {
+        pageNumbers.push('...'); // First ellipsis
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+
+      if (endPage < totalPages - 1) {
+        pageNumbers.push('...'); // Second ellipsis
+      }
+
+      pageNumbers.push(totalPages); // Always show the last page
+    }
+
+    return pageNumbers.map((number, index) => (
+      <button
+        key={number === '...' ? `ellipsis-${index}` : number} // Unique key for ellipsis
+        onClick={() => number !== '...' && paginate(number)}
+        className={currentPage === number ? 'active' : ''}
+        disabled={number === '...'}
+      >
+        {number}
+      </button>
+    ));
+  };
+
+  if (loading) {
+    return <div className="church-directory-container">Loading churches...</div>;
+  }
+
+  if (error) {
+    return <div className="church-directory-container">Error: {error}</div>;
+  }
+
+  return (
+    <div className="church-directory-container">
+      <h2>Church Directory</h2>
+      <div className="controls">
+        <input
+          type="text"
+          placeholder="Search churches..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+      {filteredChurches.length === 0 ? (
+        <p>No churches found matching your search.</p>
+      ) : (
+        <>
+          <div className="church-cards-container">
+            {currentChurches.map((church) => (
+              <div key={church.id} className="church-card">
+                <h3>{church.church_name}</h3>
+                <p><strong>Denomination:</strong> {church.denomination}</p>
+                <p><strong>Location:</strong> {church.church_street_purok}, {church.church_barangay}, {church.church_town}</p>
+                <p><strong>Contact:</strong> {church.church_contact_number}</p>
+                {/* Add more church details as needed */}
+              </div>
+            ))}
+          </div>
+          <div className="pagination">
+            <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>Previous</button>
+            {renderPageNumbers()}
+            <button onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages}>Next</button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+export default ChurchDirectoryPage;

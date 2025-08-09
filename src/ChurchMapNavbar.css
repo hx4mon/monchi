@@ -1,0 +1,272 @@
+.hamburger-button {
+  position: fixed;
+  top: 0; /* Moved to the very top */
+  left: 10px;
+  z-index: 10000;
+  cursor: grab; /* Indicate draggable */
+  background-color: #6c757d; /* mons gray */
+  color: white; /* Icon color */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.hamburger-button:hover {
+  background-color: #5a6268; /* Slightly darker on hover */
+}
+
+.hamburger-button:active {
+  cursor: grabbing; /* Indicate dragging */
+}
+
+.hamburger-button svg {
+  font-size: 1.2em;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -420px; /* Adjusted width */
+  width: 420px; /* Adjusted width */
+  height: 100%;
+  background-color: #F5F5F5; /* white smoke */
+  transition: left 0.5s ease-in-out;
+  z-index: 9999;
+  color: #343a40; /* Default text color for sidebar */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Shadow for dividing purposes */
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden; /* Hide horizontal overflow */
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.info-sidebar {
+  position: fixed;
+  top: 0;
+  left: -420px; /* Adjusted width */
+  width: 420px; /* Adjusted width */
+  height: 100%;
+  background-color: #F5F5F5; /* white smoke */
+  transition: left 0.5s ease-in-out;
+  z-index: 9999;
+  padding: 20px; /* Uniform padding */
+  box-sizing: border-box;
+  overflow-y: auto; /* Enable scrolling for long content */
+  overflow-x: hidden; /* Hide horizontal overflow */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Shadow for dividing purposes */
+}
+
+.info-sidebar.open {
+  left: 0;
+}
+
+.info-sidebar .card:first-of-type {
+  margin-top: 30px; /* Adjusted to lower the content without excessive space */
+}
+
+.close-button {
+  position: absolute;
+  top: 10px; /* Adjusted to be within the new top padding */
+  right: 10px; /* Adjusted to be within the new right padding */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #333;
+}
+
+.card {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-bottom: 10px; /* Space between cards */
+  width: 100%; /* Ensure card takes full width */
+  box-sizing: border-box; /* Include padding in width */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align content to the left */
+}
+
+.card h2 {
+  font-size: 1.1em; /* Slightly smaller font for church name */
+  margin-top: 0; /* Removed to prevent double margin */
+  margin-bottom: 5px;
+  color: #343a40; /* Darker grey for subtle color */
+}
+
+.church-name-wrapper {
+  width: 100%; /* Ensure it takes full width of the card */
+  text-align: center; /* Center the text inside */
+}
+
+.church-image-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  min-height: 200px; /* Explicitly set a minimum height */
+  align-items: center; /* Center image vertically within the container */
+}
+
+.church-image {
+  max-width: 100%;
+  height: auto; /* Allow height to adjust proportionally */
+  border-radius: 8px;
+  object-fit: contain; /* Ensure the whole image is visible */
+  max-height: 200px; /* Limit image height to container height */
+}
+
+.card p {
+  font-size: 0.85em; /* Smaller font for details */
+  margin: 0;
+  text-align: left; /* Align text to the left */
+}
+
+.search-box {
+  display: flex;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.search-box input {
+  flex-grow: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 5px;
+  box-sizing: border-box; /* Ensure padding is included in width */
+  min-width: 0; /* Allow input to shrink */
+}
+
+.search-box button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+.search-box button:hover {
+  background-color: #5a6268;
+}
+
+.menu-section {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  cursor: pointer;
+  font-weight: 500;
+  color: #343a40;
+}
+
+.menu-item:hover {
+  color: #6c757d;
+}
+
+.dropdown-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: #f8f9fa;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-menu li {
+  padding: 8px 15px;
+  cursor: pointer;
+  color: #343a40;
+}
+
+.dropdown-menu li:hover {
+  background-color: #e9ecef;
+}
+
+/* Responsive adjustments for tablets and smaller screens */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 45vw; /* Take up 45% of viewport width */
+    left: -45vw;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .info-sidebar {
+    width: 45vw; /* Take up 45% of viewport width */
+    left: -45vw;
+  }
+
+  .info-sidebar.open {
+    left: 0;
+  }
+
+  .search-box {
+    padding: 4px; /* Further reduced padding */
+  }
+
+  .search-box input {
+    padding: 4px;
+    font-size: 0.8em;
+  }
+
+  .search-box button {
+    padding: 4px 6px;
+    font-size: 0.8em;
+  }
+}
+
+/* Responsive adjustments for very small screens (e.g., mobile phones) */
+@media (max-width: 375px) {
+  .sidebar {
+    width: 45vw; /* Take up 45% of viewport width */
+    left: -45vw;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .info-sidebar {
+    width: 45vw; /* Take up 45% of viewport width */
+    left: -45vw;
+  }
+
+  .info-sidebar.open {
+    left: 0;
+  }
+
+  .search-box {
+    padding: 2px;
+  }
+
+  .search-box input {
+    padding: 2px;
+    font-size: 0.7em;
+  }
+
+  .search-box button {
+    padding: 2px 4px;
+    font-size: 0.7em;
+  }
+}

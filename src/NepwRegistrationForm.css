@@ -1,0 +1,157 @@
+.nepw-registration-form-container {
+  max-width: 680px;
+  margin: 30px auto; /* Add margin-top to create space from navbar */
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.nepw-registration-form-container > h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.8em; /* A bit larger */
+  color: #555; /* New color */
+  font-weight: 550; /* New font weight */
+}
+
+.nepw-registration-form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.nepw-registration-form-container input[type="text"],
+.nepw-registration-form-container input[type="date"],
+.nepw-registration-form-container input[type="number"],
+.nepw-registration-form-container select {
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 1em;
+  box-sizing: border-box; /* Ensure padding doesn't increase width */
+  background-color: #f5f5f5; /* whitesmoke */
+  color: #6c757d; /* Set default text color for select to mons gray */
+}
+
+.nepw-registration-form-container select option {
+  color: black; /* Set color for actual options to black */
+}
+
+.nepw-registration-form-container select option[value=""][disabled] {
+  color: #6c757d; /* Ensure disabled option (placeholder) is mons gray */
+}
+
+.nepw-registration-form-container input:focus,
+.nepw-registration-form-container select:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.submit-button-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%; /* Ensure the wrapper takes full width */
+}
+
+.nepw-registration-form-container button[type="submit"] {
+  width: 75%;
+  padding: 12px;
+  background-color: #d4edda; /* Pale green */
+  color: #666; /* Match text color of Choose Image button */
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nepw-registration-form-container button[type="submit"]:hover {
+  background-color: #c3e6cb; /* Slightly darker pale green for hover */
+}
+
+.image-upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  border: 1px dashed #ced4da;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+}
+
+.image-preview {
+  width: 260px;
+  height: 260px;
+  border: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin-bottom: 15px;
+  border-radius: 0; /* Make it square */
+  background-color: #e9ecef; /* powder blue */
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-preview .placeholder {
+  color: #6c757d; /* mons gray */
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #c5e3ec; /* pale blue */
+  color: #666; /* Change text color to a lighter shade */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.custom-file-upload:hover {
+  background-color: #aedbe6; /* Slightly darker pale blue for hover */
+}
+
+.name-fields-group,
+.name-details-group,
+.contact-details-group,
+.location-details-group,
+.church-designation-group {
+  display: flex;
+  gap: 15px;
+}
+
+.name-fields-group input,
+.name-details-group input,
+.name-details-group select,
+.contact-details-group input,
+.location-details-group select,
+.church-designation-group > div,
+.church-designation-group > select {
+  flex: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nepw-registration-form-container {
+    margin: 15px auto;
+    padding: 20px;
+  }
+
+  .name-fields-group,
+  .name-details-group,
+  .contact-details-group,
+  .location-details-group,
+  .church-designation-group {
+    flex-direction: column; /* Stack inputs/selects vertically on small screens */
+  }
+}

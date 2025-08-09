@@ -1,0 +1,59 @@
+.react-layers-control-container {
+  position: relative;
+}
+
+.react-layers-control-toggle {
+  background-color: #fff;
+  border: 2px solid rgba(0,0,0,0.2);
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  display: flex; /* Use flexbox for centering */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  cursor: pointer;
+}
+
+.react-layers-control-toggle:hover {
+  background-color: #f4f4f4;
+}
+
+.react-layers-control-toggle img {
+  width: 16px;
+  height: 16px;
+}
+
+.react-layers-control-menu {
+  position: absolute;
+  top: 0;
+  right: 32px; /* Position to the left of the button */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+  min-width: 120px;
+}
+
+.react-layers-control-layer {
+  display: flex;
+  align-items: center;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.react-layers-control-layer:hover {
+  background-color: #f4f4f4;
+}
+
+.react-layers-control-layer input[type="radio"] {
+  margin-right: 8px;
+}
+
+.react-layers-control-layer label {
+  cursor: pointer;
+  width: 100%;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none; /* Standard syntax */
+}

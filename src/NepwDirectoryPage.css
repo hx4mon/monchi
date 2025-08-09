@@ -1,0 +1,85 @@
+.nepw-directory-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.nepw-directory-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.controls {
+  display: flex;
+  justify-content: center; /* Center the search input */
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.controls input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 1em;
+  width: 100%;
+  max-width: 400px; /* Limit search input width */
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden; /* Ensures rounded corners apply to table borders */
+}
+
+table th,
+table td {
+  padding: 12px 15px;
+  border: 1px solid #e9ecef; /* powder blue border */
+  text-align: left;
+}
+
+table th {
+  background-color: #f8f9fa; /* Light grey header */
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #fefefe;
+}
+
+table tbody tr:hover {
+  background-color: #f0f0f0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .controls input[type="text"] {
+    max-width: 100%;
+  }
+
+  table th,
+  table td {
+    font-size: 0.85em;
+    padding: 8px 10px;
+  }
+}

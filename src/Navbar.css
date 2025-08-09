@@ -1,0 +1,161 @@
+.navbar {
+  background-color: #F5F5F5; /* white smoke - matching sidebar theme */
+  height: 60px;
+  display: flex;
+  align-items: center;
+  font-family: 'Inter', sans-serif; /* Apply Inter font */
+  font-size: 1rem; /* Adjust font size */
+  font-weight: 400; /* Adjust font weight */
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Vertically center items */
+  height: 60px;
+  z-index: 1;
+  width: 100%;
+  padding: 0 20px; /* Add padding to the sides */
+}
+
+.navbar-logo {
+  color: #343a40; /* Dark gray - matching sidebar text */
+  justify-self: start;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  text-align: center;
+  margin-left: auto; /* Align menu to the right */
+}
+
+.nav-item {
+  height: 60px;
+}
+
+.nav-links {
+  color: #343a40; /* Dark gray - matching sidebar text */
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 0 1rem;
+  height: 100%;
+  transition: all 0.2s ease-out;
+  text-transform: capitalize; /* Capitalize each word */
+}
+
+.nav-links:hover {
+  color: #6c757d; /* mons gray on hover */
+  background-color: rgba(0, 0, 0, 0.05); /* Subtle hover background */
+  transform: none; /* Remove scale transform */
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  color: #343a40; /* Dark gray - matching sidebar text */
+  cursor: pointer;
+  font-size: 1rem; /* Match nav-links */
+  font-family: inherit; /* Inherit font from navbar */
+  padding: 0 1rem;
+  height: 100%;
+  transition: all 0.2s ease-out;
+  text-transform: capitalize; /* Capitalize each word */
+}
+
+.logout-button:hover {
+  color: #6c757d; /* mons gray on hover */
+  background-color: rgba(0, 0, 0, 0.05); /* Subtle hover background */
+  transform: none; /* Remove scale transform */
+}
+
+.nav-links-mobile {
+  display: none;
+}
+
+.menu-icon {
+  display: none;
+}
+
+@media screen and (max-width: 960px) {
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    width: 90vw; /* Smaller width */
+    max-width: 350px; /* Max width for larger screens */
+    height: auto; /* Auto height based on content */
+    position: absolute;
+    top: 70px; /* Position below navbar */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    background: #F5F5F5;
+    padding: 1rem 0;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translate(-50%, -20px); /* Start slightly above */
+  }
+
+  .nav-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0); /* Slide into final position */
+    z-index: 1;
+  }
+
+  .nav-item {
+    height: auto; /* Reset height for mobile */
+    width: 100%;
+  }
+
+  .nav-links {
+    text-align: center;
+    padding: 1.5rem;
+    width: 100%;
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center text horizontally */
+    align-items: center; /* Center text vertically */
+  }
+
+  .nav-links:hover {
+    background-color: #e9ecef;
+    color: #007bff;
+    border-radius: 0;
+  }
+  
+  .logout-button {
+      width: 100%;
+      padding: 1.5rem;
+  }
+
+  .navbar-logo {
+    /* Keep logo in flow, remove absolute positioning */
+    margin-left: 1rem;
+    position: static;
+    transform: none;
+  }
+
+  .menu-icon {
+    display: block;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #343a40; /* Make icon visible */
+    margin-right: 1rem; /* Add some margin */
+  }
+
+  .nav-links-mobile {
+    display: none; /* Hide redundant mobile button */
+  }
+}

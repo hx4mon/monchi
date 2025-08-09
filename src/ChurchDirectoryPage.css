@@ -1,0 +1,134 @@
+.church-directory-container {
+  padding: 20px;
+  max-width: 1400px; /* Increased max-width */
+  margin: 20px auto;
+  background-color: #FAFAFA; /* Changed background color to a lighter shade */
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.church-directory-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #555; /* Changed to #555 */
+  font-size: 2rem; /* Changed to 2rem */
+}
+
+.controls {
+  display: flex;
+  justify-content: center; /* Center the search input */
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.controls input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 1em;
+  width: 100%;
+  max-width: 400px; /* Limit search input width */
+  background-color: whitesmoke;
+  color: #333; /* Set text color to match project standard */
+}
+
+/* Card specific styles */
+.church-cards-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 cards per row on larger screens */
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.church-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease-in-out;
+  max-width: 420px; /* Increased max-width */
+}
+
+.church-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.church-card h3 {
+  color: #555; /* Changed to #555 as requested */
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.5em;
+  text-align: center; /* Center the text */
+}
+
+.church-card p {
+  margin-bottom: 5px;
+  font-size: 1em; /* Increased font-size */
+  color: #555; /* Changed to #555 */
+  line-height: 1; /* Set line height back to 1 */
+}
+
+.church-card p strong {
+  color: #555; /* Changed to #555 */
+}
+
+/* Pagination styles */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 5px;
+}
+
+.pagination button {
+  background-color: rgb(197, 227, 236);
+  color: rgb(102, 102, 102); /* Changed to rgb(102, 102, 102) */
+  border: 1px solid rgb(197, 227, 236);
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #b0d9e8; /* Slightly darker on hover */
+  border-color: #b0d9e8;
+}
+
+.pagination button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.pagination button.active {
+  background-color: rgb(170, 200, 210); /* Slightly darker for contrast */
+  border-color: rgb(170, 200, 210);
+  color: rgb(102, 102, 102); /* Text color as requested */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .church-cards-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 cards per row on medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .controls input[type="text"] {
+    max-width: 100%;
+  }
+
+  .church-cards-container {
+    grid-template-columns: 1fr; /* 1 card per row on small screens */
+  }
+}
