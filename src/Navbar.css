@@ -118,6 +118,8 @@
   .nav-item {
     height: auto; /* Reset height for mobile */
     width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
   .nav-links {

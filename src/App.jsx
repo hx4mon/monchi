@@ -15,6 +15,7 @@ import DashboardPage from './DashboardPage';
 
 import NepwDirectoryPage from './NepwDirectoryPage';
 import ChurchDirectoryPage from './ChurchDirectoryPage';
+import AboutPage from './AboutPage'; // Import the new AboutPage
 
 // ProtectedRoute component
 function ProtectedRoute({ children, isLoggedIn, allowedRoles, userRole }) {
@@ -173,6 +174,7 @@ function App() {
           <Route path="/directory" element={<ProtectedRoute isLoggedIn={isLoggedIn}><DirectoryLandingPage /></ProtectedRoute>} />
           <Route path="/directory/churches" element={<ProtectedRoute isLoggedIn={isLoggedIn}><ChurchDirectoryPage /></ProtectedRoute>} />
           <Route path="/directory/nepw" element={<ProtectedRoute isLoggedIn={isLoggedIn}><NepwDirectoryPage /></ProtectedRoute>} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/admin-approval" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['admin']} userRole={userRole}><AdminApprovalPage /></ProtectedRoute>} />
           <Route path="/admin/nepw-approvals" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['admin']} userRole={userRole}><AdminApprovalPage /></ProtectedRoute>} />
@@ -186,6 +188,7 @@ function App() {
                 selectedBarangay={selectedBarangay} 
                 selectedChurch={selectedChurch} 
                 selectedMarkerId={selectedChurch?.id} 
+                navSelectedMarkerId={location.state?.selectedMarkerId} // Pass navSelectedMarkerId
                 isLoggedIn={isLoggedIn}
               />
             </ProtectedRoute>

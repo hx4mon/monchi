@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MapContainer, Marker, Popup, useMap } from 'react-leaflet';
+import { useLocation } from 'react-router-dom'; // Import useLocation
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import ReactDOMServer from 'react-dom/server';
@@ -27,7 +28,9 @@ const createCustomDivIcon = (churchData) => {
   });
 };
 
-const Map = ({ onChurchSelect, onMapClick, freeTextSearchQuery, selectedTown, selectedBarangay, selectedChurch, selectedMarkerId, isLoggedIn }) => {
+const Map = ({ onChurchSelect, onMapClick, freeTextSearchQuery, selectedTown, selectedBarangay, selectedChurch, selectedMarkerId, navSelectedMarkerId, isLoggedIn }) => {
+  const location = useLocation(); // Get location object
+  const { churchLocation } = location.state || {}; // Destructure state
   const mapRef = useRef(null); // Ref to store the Leaflet map instance
   const [markers, setMarkers] = useState([]);
   const [showMarkers, setShowMarkers] = useState(false); // New state to control marker visibility
@@ -47,6 +50,17 @@ const Map = ({ onChurchSelect, onMapClick, freeTextSearchQuery, selectedTown, se
   };
 
   const fuse = useRef(new Fuse([], fuseOptions)); // Initialize Fuse with empty data
+
+  useEffect(() => {
+    if (churchLocation && mapRef.current && markers.length > 0) {
+      mapRef.current.setView([churchLocation.lat, churchLocation.lng], 13); // Center map and zoom
+      // Find the church in the markers state and select it
+      const churchToSelect = markers.find(marker => marker.id === navSelectedMarkerId);
+      if (churchToSelect) {
+        onChurchSelect(churchToSelect);
+      }
+    }
+  }, [churchLocation, navSelectedMarkerId, markers, onChurchSelect, mapRef]);
 
   useEffect(() => {
     // Fetch all churches from your Flask API on component mount
@@ -101,31 +115,35 @@ const Map = ({ onChurchSelect, onMapClick, freeTextSearchQuery, selectedTown, se
   useEffect(() => {
     let resultsToFilter = markers; // Start with all markers
 
-    // 1. Apply fuzzy search if freeTextSearchQuery is present
-    if (debouncedSearchQuery !== '') {
-      const fuseInstance = new Fuse(markers, fuseOptions); // Always search on all markers
-      const fuzzyResults = fuseInstance.search(debouncedSearchQuery);
-      resultsToFilter = fuzzyResults.map(item => item.item);
-    }
+    if (navSelectedMarkerId) {
+      resultsToFilter = markers.filter(marker => marker.id === navSelectedMarkerId);
+    } else {
+      // 1. Apply fuzzy search if freeTextSearchQuery is present
+      if (debouncedSearchQuery !== '') {
+        const fuseInstance = new Fuse(markers, fuseOptions); // Always search on all markers
+        const fuzzyResults = fuseInstance.search(debouncedSearchQuery);
+        resultsToFilter = fuzzyResults.map(item => item.item);
+      }
 
-    // 2. Filter by selected town from the current results
-    if (selectedTown) {
-      resultsToFilter = resultsToFilter.filter(marker =>
-        marker.church_town === selectedTown
-      );
-    }
+      // 2. Filter by selected town from the current results
+      if (selectedTown) {
+        resultsToFilter = resultsToFilter.filter(marker =>
+          marker.church_town === selectedTown
+        );
+      }
 
-    // 3. Filter by selected barangay from the current results
-    if (selectedBarangay) {
-      resultsToFilter = resultsToFilter.filter(marker =>
-        marker.church_barangay === selectedBarangay
-      );
+      // 3. Filter by selected barangay from the current results
+      if (selectedBarangay) {
+        resultsToFilter = resultsToFilter.filter(marker =>
+          marker.church_barangay === selectedBarangay
+        );
+      }
     }
 
     setFilteredMarkers(resultsToFilter);
-    setShowMarkers(!!selectedTown || !!selectedBarangay || (debouncedSearchQuery !== '' && resultsToFilter.length > 0));
+    setShowMarkers(!!selectedTown || !!selectedBarangay || (debouncedSearchQuery !== '' && resultsToFilter.length > 0) || !!navSelectedMarkerId);
 
-  }, [debouncedSearchQuery, markers, selectedTown, selectedBarangay]);
+  }, [debouncedSearchQuery, markers, selectedTown, selectedBarangay, navSelectedMarkerId]);
 
   const handleMarkerClick = async (church) => {
     onChurchSelect(church);
@@ -159,6 +177,7 @@ const Map = ({ onChurchSelect, onMapClick, freeTextSearchQuery, selectedTown, se
 
   return (
     <MapContainer
+      key={navSelectedMarkerId} // Add key to force re-render when navSelectedMarkerId changes
       center={[15.58, 121]} // Initial map center
       zoom={11} // Initial map zoom
       style={{ height: '100vh', width: '100%' }}
@@ -189,7 +208,7 @@ const Map = ({ onChurchSelect, onMapClick, freeTextSearchQuery, selectedTown, se
         <Marker
           key={marker.id}
           position={[marker.latitude, marker.longitude]}
-          icon={createCustomDivIcon({ churchName: marker.church_name, churchStatus: marker.church_status, isSelected: marker.id === selectedMarkerId })} // Use the function to create the divIcon
+          icon={createCustomDivIcon({ churchName: marker.church_name, churchStatus: marker.church_status, isSelected: marker.id === navSelectedMarkerId })} // Use the function to create the divIcon
           eventHandlers={{
             click: () => handleMarkerClick(marker),
           }}

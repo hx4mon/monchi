@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './ChurchDirectoryPage.css'; // Import the new CSS file
 
 const ChurchDirectoryPage = () => {
@@ -9,6 +10,24 @@ const ChurchDirectoryPage = () => {
   const [filteredChurches, setFilteredChurches] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [churchesPerPage] = useState(12); // Number of churches per page
+  const [selectedChurch, setSelectedChurch] = useState(null);
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  useEffect(() => {
+    const handleEscKey = (event) => {
+      if (event.key === 'Escape') {
+        setSelectedChurch(null);
+      }
+    };
+
+    if (selectedChurch) {
+      document.addEventListener('keydown', handleEscKey);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscKey);
+    };
+  }, [selectedChurch]);
 
   useEffect(() => {
     const fetchChurches = async () => {
@@ -130,15 +149,41 @@ const ChurchDirectoryPage = () => {
         <>
           <div className="church-cards-container">
             {currentChurches.map((church) => (
-              <div key={church.id} className="church-card">
+              <div 
+                key={church.id} 
+                className="church-card"
+                onClick={() => setSelectedChurch(church)}
+              >
                 <h3>{church.church_name}</h3>
                 <p><strong>Denomination:</strong> {church.denomination}</p>
-                <p><strong>Location:</strong> {church.church_street_purok}, {church.church_barangay}, {church.church_town}</p>
+                <p><strong>Location:</strong> {`${church.church_street_purok}, ${church.church_barangay}, ${church.church_town}`}</p>
                 <p><strong>Contact:</strong> {church.church_contact_number}</p>
                 {/* Add more church details as needed */}
               </div>
             ))}
           </div>
+          {selectedChurch && (
+            <div className="church-details-popup">
+              <button className="close-button" onClick={() => setSelectedChurch(null)}>X</button>
+              <h3>{selectedChurch.church_name}</h3>
+              <p><strong>Denomination:</strong> {selectedChurch.denomination}</p>
+              <div 
+                className="popup-location-link"
+                onClick={() => {
+                  setSelectedChurch(null); // Close popup
+                  navigate('/map', { state: { churchLocation: { lat: selectedChurch.latitude, lng: selectedChurch.longitude }, selectedMarkerId: selectedChurch.id } });
+                }}
+              >
+                <p><strong>Location:</strong> {`${selectedChurch.church_street_purok}, ${selectedChurch.church_barangay}, ${selectedChurch.church_town}`}</p>
+                <p className="click-to-view">Click to view on map</p>
+              </div>
+              <p><strong>Contact:</strong> {selectedChurch.church_contact_number}</p>
+              <p><strong>Pastor:</strong> {selectedChurch.pastor_name}</p>
+              <p><strong>Contact Number:</strong> {selectedChurch.pastor_contact_number}</p>
+              <p><strong>Email:</strong> {selectedChurch.pastor_email}</p>
+              <p><strong>Status:</strong> {selectedChurch.status}</p>
+            </div>
+          )}
           <div className="pagination">
             <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>Previous</button>
             {renderPageNumbers()}

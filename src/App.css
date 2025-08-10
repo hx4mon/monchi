@@ -131,4 +131,24 @@
     margin: 10px auto;
     padding: 15px;
   }
+
+  .map-control-buttons {
+    left: 10px;
+  }
+
+  .map-control-button {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .map-control-buttons {
+    gap: 5px;
+  }
+
+  .map-control-button {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
 }

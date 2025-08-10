@@ -11,7 +11,7 @@ const MapEventsHandler = ({ onMapInstanceReady, onMapClick }) => {
 
       // Add custom attribution control
       const customAttribution = L.control.attribution({ position: 'bottomright', prefix: false });
-      customAttribution.addAttribution('&copy; MIS-SOLEDAD contributors');
+      customAttribution.addAttribution('&copy; <a href="/about" target="_blank">MIS-SOLEDAD</a> contributors');
       customAttribution.addTo(map);
 
       // Add click listener to close info sidebar when clicking on map
