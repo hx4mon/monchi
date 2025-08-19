@@ -13,13 +13,13 @@
   border-radius: 10px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
+  max-width: 400px; /* Adjusted from 420px to 400px for consistency with previous versions */
   text-align: center;
 }
 
 .login-card h2 {
   margin-bottom: 30px;
-  color: #333;
+  color: #333; /* Adjusted from #777 to #333 for consistency with previous versions */
   font-family: 'Inter', sans-serif;
 }
 
@@ -33,27 +33,51 @@
   display: block;
   margin-bottom: 8px;
   font-weight: bold;
-  color: #555;
+  color: #555; /* Adjusted from #777 to #555 for consistency with previous versions */
   font-family: 'Inter', sans-serif;
 }
 
-.form-group input[type="text"],
-.form-group input[type="password"] {
-  width: 100%;
-  padding: 12px 15px;
-  border: 1px solid #ced4da;
-  border-radius: 8px;
+.input-icon-container {
+  display: flex; /* Use flexbox */
+  align-items: center; /* Vertically center items */
+  height: 45px; /* Keep explicit height for consistency */
+  border: 1px solid #ced4da; /* Move border to container */
+  border-radius: 8px; /* Move border-radius to container */
+  background-color: #f5f5f5; /* Move background to container */
+  padding: 0 15px; /* Add padding to container */
+}
+
+.input-icon-container .icon {
+  color: #888;
+  font-size: 1em;
+  margin-right: 10px; /* Space between icon and input */
+}
+
+.input-icon-container input[type="text"],
+.input-icon-container input[type="password"] {
+  flex-grow: 1; /* Allow input to take remaining space */
+  height: 100%; /* Fill container height */
+  padding: 0; /* Reset all padding */
+  padding-left: 5px; /* Add specific left padding */
+  border: none; /* Remove border from input */
+  background-color: transparent; /* Remove debugging background */
   font-size: 1em;
   font-family: 'Inter', sans-serif;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   box-sizing: border-box;
-  background-color: #f5f5f5; /* whitesmoke */
-  color: #333; /* Changed text color */
+  color: #333;
+  line-height: 45px; /* Set line-height equal to height for vertical centering */
+  transform: translateY(15%); /* Apply the working solution */
 }
 
 .form-group input:focus {
+  outline: none; /* Remove default outline */
+  box-shadow: none; /* Remove box-shadow from input focus */
+}
+
+/* Add focus style to the container */
+.input-icon-container:focus-within {
   border-color: #6c757d; /* mons gray */
-  outline: 0;
   box-shadow: 0 0 0 3px rgba(108, 117, 125, 0.2);
 }
 

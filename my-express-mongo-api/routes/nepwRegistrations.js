@@ -3,8 +3,10 @@ module.exports = (upload) => {
   const router = express.Router();
   const mongoose = require('mongoose');
   const path = require('path'); // Import path module
+  const NepwRegistration = require('../models/NepwRegistration'); // Import the NepwRegistration model
 
-  // Define NEPW Registration Schema
+  // Remove internal schema definition
+  /*
   const nepwRegistrationSchema = new mongoose.Schema({
     first_name: { type: String, required: true }, // First Name
     middle_name: { type: String }, // Middle Name
@@ -24,6 +26,7 @@ module.exports = (upload) => {
   });
 
   const NepwRegistration = mongoose.model('NepwRegistration', nepwRegistrationSchema);
+  */
 
   // POST /api/nepw-registrations - Create a new NEPW registration
   router.post('/', upload.single('image'), async (req, res) => {
@@ -41,7 +44,8 @@ module.exports = (upload) => {
         selected_church_name, 
         designation, 
         other_church_name,
-        status
+        status,
+        birthday // Added birthday
       } = req.body;
 
       const imagePath = req.file ? req.file.filename : ''; // Get filename if image was uploaded
@@ -61,6 +65,7 @@ module.exports = (upload) => {
         other_church_name,
         image: imagePath,
         status: status || 'pending',
+        birthday, // Added birthday
       });
 
       const savedRegistration = await newRegistration.save();
@@ -85,7 +90,7 @@ module.exports = (upload) => {
         filter = { status: 'pending' }; // Default to pending
       }
 
-      console.log('NepwRegistrations API: Fetching with filter:', filter);
+      
       const registrations = await NepwRegistration.find(filter);
       res.status(200).json(registrations);
     } catch (error) {

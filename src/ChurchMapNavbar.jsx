@@ -212,7 +212,7 @@ function ChurchMapNavbar({ selectedChurch, onMapClick, onSearch, isMenuSidebarOp
         </div>
 
         <div className="menu-section">
-          <div className="menu-item" onClick={() => navigate('/')}>
+          <div className="menu-item" onClick={() => navigate(isLoggedIn ? '/dashboard' : '/')}>
             Home
           </div>
         </div>

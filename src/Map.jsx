@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { MapContainer, Marker, Popup, useMap } from 'react-leaflet';
 import { useLocation } from 'react-router-dom'; // Import useLocation
 import 'leaflet/dist/leaflet.css';
@@ -8,6 +8,28 @@ import MyCustomMarkerContent from './MyCustomMarkerContent';
 import MapEventsHandler from './MapEventsHandler';
 import Fuse from 'fuse.js'; // Import Fuse.js
 import ReactLayersControl from './ReactLayersControl';
+import neDistrictData from '../ne_district.json'; // Import the district data
+
+// District color mapping
+const districtColors = {
+    "District1": "crimson",
+    "District2": "green",
+    "District3": "gold",
+    "District4": "navy"
+};
+
+// Helper function to find district for a town (case-insensitive)
+const getDistrictForTown = (town) => {
+    if (!town) return null;
+    const upperCaseTown = town.toUpperCase();
+    for (const district in neDistrictData.NuevaEcijaDistricts) {
+        if (neDistrictData.NuevaEcijaDistricts[district].includes(upperCaseTown)) {
+            return district;
+        }
+    }
+    return null; // Or a default district
+};
+
 
 // Function to create a custom divIcon from a React component
 const createCustomDivIcon = (churchData) => {
@@ -16,6 +38,7 @@ const createCustomDivIcon = (churchData) => {
       churchName={churchData.church_name}
       churchStatus={churchData.church_status}
       isSelected={churchData.isSelected}
+      districtColor={churchData.districtColor} // Pass color
     />
   );
 
@@ -36,6 +59,7 @@ const Map = ({ onChurchSelect, onMapClick, freeTextSearchQuery, selectedTown, se
   const [showMarkers, setShowMarkers] = useState(false); // New state to control marker visibility
   const [filteredMarkers, setFilteredMarkers] = useState([]);
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(freeTextSearchQuery); // New state for debounced search query
+  const [selectedDistrict, setSelectedDistrict] = useState(null); // State for district filter
 
   // Fuse.js options for fuzzy searching
   const fuseOptions = {
@@ -100,7 +124,7 @@ const Map = ({ onChurchSelect, onMapClick, freeTextSearchQuery, selectedTown, se
     };
   }, [onChurchSelect, isLoggedIn]);
 
-  
+
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -113,16 +137,31 @@ const Map = ({ onChurchSelect, onMapClick, freeTextSearchQuery, selectedTown, se
   }, [freeTextSearchQuery]);
 
   useEffect(() => {
-    let resultsToFilter = markers; // Start with all markers
+    const NE_BOUNDS = {
+      minLat: 15.154021,
+      minLng: 120.612606,
+      maxLat: 16.13085,
+      maxLng: 121.370978,
+    };
+
+    let resultsToFilter = markers;
+
+    // Filter by Nueva Ecija bounds first
+    resultsToFilter = resultsToFilter.filter(marker =>
+      marker.latitude >= NE_BOUNDS.minLat &&
+      marker.latitude <= NE_BOUNDS.maxLat &&
+      marker.longitude >= NE_BOUNDS.minLng &&
+      marker.longitude <= NE_BOUNDS.maxLng
+    );
 
     if (navSelectedMarkerId) {
-      resultsToFilter = markers.filter(marker => marker.id === navSelectedMarkerId);
+      resultsToFilter = resultsToFilter.filter(marker => marker.id === navSelectedMarkerId);
     } else {
       // 1. Apply fuzzy search if freeTextSearchQuery is present
       if (debouncedSearchQuery !== '') {
         const fuseInstance = new Fuse(markers, fuseOptions); // Always search on all markers
         const fuzzyResults = fuseInstance.search(debouncedSearchQuery);
-        resultsToFilter = fuzzyResults.map(item => item.item);
+        resultsToFilter = resultsToFilter.filter(marker => fuzzyResults.some(item => item.item.id === marker.id));
       }
 
       // 2. Filter by selected town from the current results
@@ -138,12 +177,20 @@ const Map = ({ onChurchSelect, onMapClick, freeTextSearchQuery, selectedTown, se
           marker.church_barangay === selectedBarangay
         );
       }
+
+      // 4. Filter by selected district
+      if (selectedDistrict) {
+        resultsToFilter = resultsToFilter.filter(marker => {
+          const district = getDistrictForTown(marker.church_town);
+          return district === selectedDistrict;
+        });
+      }
     }
 
     setFilteredMarkers(resultsToFilter);
-    setShowMarkers(!!selectedTown || !!selectedBarangay || (debouncedSearchQuery !== '' && resultsToFilter.length > 0) || !!navSelectedMarkerId);
+    setShowMarkers(!!selectedTown || !!selectedBarangay || (debouncedSearchQuery !== '' && resultsToFilter.length > 0) || !!navSelectedMarkerId || !!selectedDistrict);
 
-  }, [debouncedSearchQuery, markers, selectedTown, selectedBarangay, navSelectedMarkerId]);
+  }, [debouncedSearchQuery, markers, selectedTown, selectedBarangay, navSelectedMarkerId, selectedDistrict]);
 
   const handleMarkerClick = async (church) => {
     onChurchSelect(church);
@@ -156,11 +203,16 @@ const Map = ({ onChurchSelect, onMapClick, freeTextSearchQuery, selectedTown, se
 
   const handleShowAll = () => {
     setFilteredMarkers(markers); // Set filtered markers to all markers
+    setSelectedDistrict(null); // Reset district filter
     setShowMarkers(true); // Show them
   };
 
   const handleHideAll = () => {
     setShowMarkers(false); // Hide all markers
+  };
+
+  const handleDistrictClick = (district) => {
+    setSelectedDistrict(district);
   };
 
   const baseLayers = {
@@ -178,8 +230,9 @@ const Map = ({ onChurchSelect, onMapClick, freeTextSearchQuery, selectedTown, se
   return (
     <MapContainer
       key={navSelectedMarkerId} // Add key to force re-render when navSelectedMarkerId changes
-      center={[15.58, 121]} // Initial map center
-      zoom={11} // Initial map zoom
+      center={[15.58, 121]} // Initial map center for Nueva Ecija
+      zoom={10} // Initial map zoom for Nueva Ecija
+      maxBounds={[[5.5810, 117.1742], [18.5052, 126.5374]]} // Restrict map to Philippines bounds
       style={{ height: '100vh', width: '100%' }}
       zoomAnimation={true}
       zoomAnimationDuration={2}
@@ -198,17 +251,30 @@ const Map = ({ onChurchSelect, onMapClick, freeTextSearchQuery, selectedTown, se
         baseLayers={baseLayers}
       />
 
+      
+
       <div className="map-control-buttons">
         <button className="map-control-button" onClick={handleShowAll}>Show All Markers</button>
         <button className="map-control-button" onClick={handleHideAll}>Hide All Markers</button>
+        <button className="map-control-button" onClick={() => handleDistrictClick('District1')}>First District</button>
+        <button className="map-control-button" onClick={() => handleDistrictClick('District2')}>Second District</button>
+        <button className="map-control-button" onClick={() => handleDistrictClick('District3')}>Third District</button>
+        <button className="map-control-button" onClick={() => handleDistrictClick('District4')}>Fourth District</button>
       </div>
 
       {showMarkers && filteredMarkers.map((marker) => {
+        const district = getDistrictForTown(marker.church_town);
+        const districtColor = district ? districtColors[district] : null;
         return (
         <Marker
           key={marker.id}
           position={[marker.latitude, marker.longitude]}
-          icon={createCustomDivIcon({ churchName: marker.church_name, churchStatus: marker.church_status, isSelected: marker.id === navSelectedMarkerId })} // Use the function to create the divIcon
+          icon={createCustomDivIcon({ 
+              churchName: marker.church_name, 
+              churchStatus: marker.church_status, 
+              isSelected: marker.id === navSelectedMarkerId,
+              districtColor: districtColor 
+            })} // Use the function to create the divIcon
           eventHandlers={{
             click: () => handleMarkerClick(marker),
           }}

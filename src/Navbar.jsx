@@ -18,7 +18,7 @@ const Navbar = ({ isLoggedIn, onLogout, userRole }) => {
         </div>
         <ul className={click ? 'nav-menu active' : 'nav-menu'}>
           <li className="nav-item">
-            <Link to="/" className="nav-links" onClick={closeMobileMenu}>
+            <Link to={isLoggedIn ? '/dashboard' : '/'} className="nav-links" onClick={closeMobileMenu}>
               Home
             </Link>
           </li>

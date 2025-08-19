@@ -1,38 +1,34 @@
-.dashboard-container {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 20px auto;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
+/* Dashboard Layout */
 .dashboard-container h2 {
   text-align: center;
   margin-bottom: 20px;
-  color: #333;
+  color: var(--color-text-dark);
 }
 
+/* Unauthorized Message Styling */
 .unauthorized-message {
-  color: #dc3545; /* Red for error */
-  background-color: #f8d7da; /* Light red background */
-  border: 1px solid #f5c6cb;
+  color: var(--color-error-red); /* Red for error */
+  background-color: var(--color-error-bg); /* Light red background */
+  border: 1px solid var(--color-error-border);
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 20px;
   text-align: center;
 }
 
+/* Summary Cards Section */
 .summary-cards-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-  gap: 20px;
+  justify-content: flex-start;
   margin-bottom: 30px;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 300px;
 }
 
 .summary-card {
-  background-color: #e9ecef; /* powder blue */
+  background-color: var(--color-powder-blue); /* powder blue */
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -41,6 +37,7 @@
   min-width: 250px; /* Minimum width for cards */
   max-width: 300px; /* Maximum width for cards */
   transition: transform 0.2s ease-in-out;
+  background-color: #f5f5f5;
 }
 
 .summary-card:hover {
@@ -48,7 +45,7 @@
 }
 
 .summary-card h3 {
-  color: #007bff;
+  color:#777;
   margin-bottom: 10px;
   font-size: 1.2em;
 }
@@ -56,10 +53,10 @@
 .summary-card .summary-value {
   font-size: 2.5em;
   font-weight: bold;
-  color: #333;
+  color: #777;
 }
 
-/* Responsive adjustments */
+/* Responsive Adjustments */
 @media (max-width: 768px) {
   .dashboard-container {
     padding: 15px;

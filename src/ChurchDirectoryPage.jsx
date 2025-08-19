@@ -7,6 +7,7 @@ const ChurchDirectoryPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(''); // New state for debounced search term
   const [filteredChurches, setFilteredChurches] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [churchesPerPage] = useState(12); // Number of churches per page
@@ -61,17 +62,28 @@ const ChurchDirectoryPage = () => {
     fetchChurches();
   }, []);
 
+  // Debounce useEffect
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 700); // 700ms debounce time
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm]); // Only re-run if searchTerm changes
+
   useEffect(() => {
     const results = churches.filter(church =>
-      church.church_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      church.denomination.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      church.church_street_purok.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      church.church_barangay.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      church.church_town.toLowerCase().includes(searchTerm.toLowerCase())
+      church.church_name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+      church.denomination.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+      church.church_street_purok.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+      church.church_barangay.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+      church.church_town.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
     );
     setFilteredChurches(results);
     setCurrentPage(1); // Reset to first page on new search
-  }, [searchTerm, churches]);
+  }, [debouncedSearchTerm, churches]); // Now depends on debouncedSearchTerm
 
   // Get current churches for pagination
   const indexOfLastChurch = currentPage * churchesPerPage;

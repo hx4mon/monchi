@@ -63,12 +63,14 @@ const userRoutes = require('./routes/users');
 const locationRoutes = require('./routes/locations');
 const nepwRegistrationRoutes = require('./routes/nepwRegistrations')(upload);
 const authRoutes = require('./routes/auth');
+const dashboardRoutes = require('./routes/dashboard'); // New: Import dashboard routes
 const authMiddleware = require('./middleware/authMiddleware');
 app.use('/api/churches', authMiddleware, churchRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/locations', locationRoutes);
 app.use('/api/nepw-registrations', authMiddleware, nepwRegistrationRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/dashboard', authMiddleware, dashboardRoutes); // New: Integrate dashboard routes with auth middleware
 
 // Root route
 app.get('/', (req, res) => {

@@ -24,7 +24,7 @@ router.post('/login', async (req, res) => {
 
     const userObject = user.toObject(); // Convert Mongoose document to plain object
 
-    const token = jwt.sign({ id: userObject._id, role: userObject.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: userObject._id, role: userObject.role }, process.env.JWT_SECRET, { expiresIn: '4h' });
 
     const responseData = {
       message: 'Login successful',

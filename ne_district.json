@@ -1,0 +1,44 @@
+{
+  "NuevaEcijaDistricts": {
+    "District1": [
+      "ALIAGA",
+      "CUYAPO",
+      "GUIMBA",
+      "LICAB",
+      "NAMPICUAN",
+      "QUEZON",
+      "SANTO DOMINGO",
+      "TALAVERA",
+      "ZARAGOZA"
+    ],
+    "District2": [
+      "SAN JOSE CITY",
+      "SCIENCE CITY OF MUNOZ",
+      "CARRANGLAN",
+      "LLANERA",
+      "LUPAO",
+      "PANTABANGAN",
+      "RIZAL",
+      "TALUGTUG"
+    ],
+    "District3": [
+      "CABANATUAN CITY",
+      "PALAYAN CITY",
+      "BONGABON",
+      "GABALDON",
+      "GENERAL MAMERTO NATIVIDAD",
+      "SANTA ROSA",
+      "LAUR"
+    ],
+    "District4": [
+      "GAPAN CITY",
+      "CABIAO",
+      "GENERAL TINIO",
+      "JAEN",
+      "PENARANDA",
+      "SAN ANTONIO",
+      "SAN ISIDRO",
+      "SAN LEONARDO"
+    ]
+  }
+}

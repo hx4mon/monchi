@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import CenteredFormWrapper from './CenteredFormWrapper'; // Import the wrapper
 import './DashboardPage.css';
 
 const DashboardPage = ({ userRole }) => {
-  console.log('DashboardPage: userRole prop:', userRole);
+  
   const [unauthorizedMessage, setUnauthorizedMessage] = useState('');
   const [totalChurches, setTotalChurches] = useState(0);
   const [totalMembers, setTotalMembers] = useState(0);
@@ -62,11 +63,10 @@ const DashboardPage = ({ userRole }) => {
   }
 
   return (
-    <div className="dashboard-container">
+    <div>
       {unauthorizedMessage && <p className="unauthorized-message">{unauthorizedMessage}</p>}
 
-      {(userRole === 'admin' || userRole === 'encoder' || userRole === 'user') && (
-        <div className="summary-cards-container">
+      <div className="summary-cards-container">
           <div className="summary-card">
             <h3>Total Registered Churches</h3>
             <p className="summary-value">{totalChurches}</p>
@@ -76,29 +76,6 @@ const DashboardPage = ({ userRole }) => {
             <p className="summary-value">{totalMembers}</p>
           </div>
         </div>
-      )}
-
-      {userRole === 'admin' && (
-        <>
-          <h2>Welcome, Admin!</h2>
-          <p>This is your administrative dashboard. You have full access to all features.</p>
-          <p>You can manage users, approve registrations, and view all reports.</p>
-        </>
-      )}
-      {userRole === 'encoder' && (
-        <>
-          <h2>Welcome, Encoder!</h2>
-          <p>This is your encoder dashboard. You can input and update data.</p>
-          <p>You have access to data entry forms and basic reports.</p>
-        </>
-      )}
-      {userRole === 'user' && (
-        <>
-          <h2>Welcome, User!</h2>
-          <p>This is your user dashboard. You can view general information.</p>
-          <p>Explore the map and church information.</p>
-        </>
-      )}
     </div>
   );
 };

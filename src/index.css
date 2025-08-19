@@ -9,6 +9,16 @@
   color: #213547; /* Darker text for light mode */
   background-color: #ffffff; /* White background for light mode */
 
+  /* Custom Colors */
+  --color-primary-blue: #007bff;
+  --color-dark-blue-hover: #0056b3;
+  --color-text-dark: #333;
+  --color-error-red: #dc3545;
+  --color-error-bg: #f8d7da;
+  --color-error-border: #f5c6cb;
+  --color-mons-gray: #6c757d;
+  --color-powder-blue: #e9ecef;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

@@ -1,10 +1,13 @@
 import React from 'react';
 
-const MyCustomMarkerContent = ({ churchName, churchStatus, isSelected }) => {
+const MyCustomMarkerContent = ({ churchName, churchStatus, isSelected, districtColor }) => {
   const safeChurchName = churchName || '';
   const safeChurchStatus = churchStatus || 'general';
-  const markerColor = safeChurchStatus === 'MAIN CHURCH' ? '#FF0000' : '#4285F4'; // Red for Main Church, Google Blue otherwise
-  const pinBackgroundColor = isSelected ? 'lime' : markerColor;
+  
+  // Default color from district is used, but "Main Church" status overrides it.
+  const baseMarkerColor = safeChurchStatus === 'MAIN CHURCH' ? '#FF0000' : districtColor || '#4285F4'; // Red for Main, district color, or default blue
+
+  const pinBackgroundColor = isSelected ? 'lime' : baseMarkerColor;
   const innerCircleColor = isSelected ? 'yellow' : 'white';
 
   return (
@@ -15,7 +18,7 @@ const MyCustomMarkerContent = ({ churchName, churchStatus, isSelected }) => {
           <div className="google-marker-inner-circle" style={{ backgroundColor: innerCircleColor }}></div>
         </div>
       </div>
-      <div className="google-marker-shadow"></div>
+      
     </div>
   );
 };
